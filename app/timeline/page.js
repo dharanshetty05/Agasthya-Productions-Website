@@ -12,9 +12,9 @@ export default function TimelinePage() {
       date: '7 Sept 2024',
       title: "Agasthya's Intro Video",
       type: 'Intro Video',
-      platform: 'Instagram',
-      link: 'https://www.instagram.com/p/CXYZ',
-      thumb: '/timeline/intro.jpg', // placeholder
+      platform: 'YouTube',
+      link: 'https://www.youtube.com/embed/WU6EQF1rzDQ?si=28qylpoK7ygVYR9h',
+      thumb: '/timeline/intro.png',
     },
     {
       date: '16 Nov 2024',
@@ -84,60 +84,75 @@ export default function TimelinePage() {
         Release Timeline
       </motion.h1>
 
-      <p className="text-center text-gray-400 mb-10">
-        Scroll through our cinematic journey — each project, one story closer to our dream.
+      <p className="text-center text-gray-400 mb-12 max-w-2xl mx-auto">
+        Every story leaves a mark. Scroll through our cinematic journey — from the first frame to our latest creation.
       </p>
 
-      {/* Horizontal Scrollable Timeline */}
-      <div className="overflow-x-auto pb-6 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
-        <div className="flex space-x-8 min-w-max px-4">
-          {releases.map((item, i) => (
-            <motion.div
-              key={i}
-              className="relative w-72 flex-shrink-0 group"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
-            >
-              {/* Card */}
-              <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-red-500/20 transition-all duration-300">
-                {/* Thumbnail */}
-                <div className="relative w-full h-44 bg-gradient-to-br from-gray-800 to-black flex items-center justify-center">
-                  {/* Placeholder gradient text */}
-                  <p className="absolute text-gray-700 text-sm uppercase tracking-widest">
-                    {item.title}
-                  </p>
+      <div className="relative max-w-5xl mx-auto">
+        {/* Timeline line */}
+        <div className="absolute left-5 md:left-1/2 transform md:-translate-x-1/2 h-full border-l border-gray-800"></div>
 
-                  {/* Play overlay */}
-                  {item.link && (
-                    <button
-                      onClick={() => setActiveVideo(item)}
-                      className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition"
-                    >
-                      <Play className="w-10 h-10 text-red-500" />
-                    </button>
-                  )}
+        <div className="space-y-16">
+          {releases.map((item, i) => {
+            const isLeft = i % 2 === 0;
+            return (
+              <motion.div
+                key={i}
+                className="relative md:flex md:items-center"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.07 }}
+              >
+                {/* Dot */}
+                <div className="absolute left-[0.75rem] md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-red-500 rounded-full border-2 border-black z-10"></div>
+
+                {/* Card Container */}
+                <div
+                  className={`md:w-5/12 ${
+                    isLeft ? 'md:pr-12 text-right' : 'md:pl-12 text-left md:ml-auto'
+                  }`}
+                >
+                  <motion.div
+                    className="bg-gray-900 border border-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-red-500/20 transition-all"
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    {/* Thumbnail */}
+                    <div className="relative aspect-video bg-gradient-to-br from-gray-800 to-black flex items-center justify-center">
+                      <p className="absolute text-gray-700 text-sm uppercase tracking-widest">
+                        {item.title}
+                      </p>
+
+                      {item.link && (
+                        <button
+                          onClick={() => setActiveVideo(item)}
+                          className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 hover:opacity-100 transition"
+                        >
+                          <Play className="w-10 h-10 text-red-500" />
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Text Info */}
+                    <div className="p-4">
+                      <p className="text-sm text-red-400">{item.type}</p>
+                      <h3 className="text-lg font-semibold">{item.title}</h3>
+                      <p className="text-xs text-gray-400 mt-1">{item.date}</p>
+
+                      {item.platform && (
+                        <p className="text-xs text-gray-500 mt-2">{item.platform}</p>
+                      )}
+                    </div>
+                  </motion.div>
                 </div>
 
-                {/* Details */}
-                <div className="p-4 text-center">
-                  <h3 className="text-lg font-semibold">{item.title}</h3>
-                  <p className="text-sm text-gray-400">{item.type}</p>
-                  <p className="text-xs text-gray-500 mt-1">{item.date}</p>
-
-                  {item.link && (
-                    <p className="text-xs mt-2 text-red-400">
-                      {item.platform}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </motion.div>
-          ))}
+                <div className="md:w-5/12"></div>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
 
-      {/* Video Modal */}
+      {/* Modal Player */}
       {activeVideo && (
         <motion.div
           className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center px-4"
